@@ -1,0 +1,6 @@
+# Default: ignore everything in this monorepo-sized folder.
+*
+
+# Keep the VibeVoice service source that Cloud Build actually needs.
+!VibeVoiceService/
+!VibeVoiceService/**
