@@ -1,4 +1,4 @@
-// Route path constants
+// Route path constants — VideoSync Clips
 
 export const PATHS = {
   HOME: '/',
@@ -7,10 +7,9 @@ export const PATHS = {
   OAUTH_CALLBACK: '/auth/callback',
 
   DASHBOARD: '/dashboard',
-  GENERATE: '/generate',
-  VIDEOS: '/videos',
-  BUNDLES: '/pricing',
+  CAMPAIGNS_NEW: '/campaigns/new',
+  CAMPAIGN_DETAIL: '/campaigns/:id',
   SETTINGS: '/settings',
 
   NOT_FOUND: '/404',
-};
+} as const;

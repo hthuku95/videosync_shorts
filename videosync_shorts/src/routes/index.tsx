@@ -8,10 +8,9 @@ import { HomePage } from '@/pages/Home/HomePage';
 import { LoginPage } from '@/pages/Auth/LoginPage';
 import { RegisterPage } from '@/pages/Auth/RegisterPage';
 import { OAuthCallbackPage } from '@/pages/Auth/OAuthCallbackPage';
-import { DashboardPage } from '@/pages/Dashboard/DashboardPage';
-import { GeneratePage } from '@/pages/Generate/GeneratePage';
-import { VideosPage } from '@/pages/Videos/VideosPage';
-import { BundlesPage } from '@/pages/Bundles/BundlesPage';
+import CampaignsPage from '@/pages/Campaigns/CampaignsPage';
+import NewCampaignPage from '@/pages/Campaigns/NewCampaignPage';
+import CampaignDetailPage from '@/pages/Campaigns/CampaignDetailPage';
 import { SettingsPage } from '@/pages/Settings/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage';
 
@@ -44,31 +43,23 @@ export const router = createBrowserRouter([
         path: PATHS.DASHBOARD,
         element: (
           <ErrorBoundary>
-            <DashboardPage />
+            <CampaignsPage />
           </ErrorBoundary>
         ),
       },
       {
-        path: PATHS.GENERATE,
+        path: PATHS.CAMPAIGNS_NEW,
         element: (
           <ErrorBoundary>
-            <GeneratePage />
+            <NewCampaignPage />
           </ErrorBoundary>
         ),
       },
       {
-        path: PATHS.VIDEOS,
+        path: PATHS.CAMPAIGN_DETAIL,
         element: (
           <ErrorBoundary>
-            <VideosPage />
-          </ErrorBoundary>
-        ),
-      },
-      {
-        path: PATHS.BUNDLES,
-        element: (
-          <ErrorBoundary>
-            <BundlesPage />
+            <CampaignDetailPage />
           </ErrorBoundary>
         ),
       },

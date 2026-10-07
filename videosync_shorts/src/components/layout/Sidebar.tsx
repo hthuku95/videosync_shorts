@@ -11,9 +11,7 @@ import {
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
-  AddCircleOutline as GenerateIcon,
-  PlayCircleOutline as VideosIcon,
-  LocalOffer as PricingIcon,
+  AddCircleOutline as NewCampaignIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,10 +26,8 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', icon: <DashboardIcon />, path: PATHS.DASHBOARD },
-  { label: 'Generate Video', icon: <GenerateIcon />, path: PATHS.GENERATE },
-  { label: 'My Videos', icon: <VideosIcon />, path: PATHS.VIDEOS },
-  { label: 'Pricing', icon: <PricingIcon />, path: PATHS.BUNDLES },
+  { label: 'My Campaigns', icon: <DashboardIcon />, path: PATHS.DASHBOARD },
+  { label: 'New Campaign', icon: <NewCampaignIcon />, path: PATHS.CAMPAIGNS_NEW },
 ];
 
 interface SidebarProps {

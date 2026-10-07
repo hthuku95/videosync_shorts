@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUIStore, getEffectiveTheme } from '@/stores/uiStore';
 import { useAuth } from '@/hooks/useAuth';
 import { PATHS } from '@/routes/paths';
-import { useCredits } from '@/hooks/useCredits';
+
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -25,7 +25,6 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useUIStore();
   const { logout, user } = useAuth();
-  const { remaining } = useCredits();
   const effectiveTheme = getEffectiveTheme(themeMode);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -69,11 +68,11 @@ export function TopBar({ onMenuClick }: TopBarProps) {
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Chip
-            label={`${remaining} video${remaining === 1 ? '' : 's'} left`}
+            label="+ New Campaign"
             size="small"
             color="secondary"
-            sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
-            onClick={() => navigate(PATHS.BUNDLES)}
+            sx={{ display: { xs: 'none', sm: 'inline-flex' }, cursor: 'pointer' }}
+            onClick={() => navigate(PATHS.CAMPAIGNS_NEW)}
           />
 
           {user?.username && (
