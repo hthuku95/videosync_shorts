@@ -32,6 +32,7 @@ export interface CampaignPost {
   variation_prompt: string | null;
   caption: string | null;
   media_r2_url: string | null;
+  media_url?: string | null;
   status: string;
   zernio_post_id: string | null;
 }

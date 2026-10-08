@@ -113,11 +113,11 @@ export default function CampaignDetailPage() {
                       <LinearProgress sx={{ mt: 1 }} />
                     ) : null}
                   </Box>
-                  {p.media_r2_url ? (
-                    <Button size="small" variant="outlined" href={p.media_r2_url} target="_blank">
+                  {(() => { const vurl = p.media_url || p.media_r2_url; return vurl ? (
+                    <Button size="small" variant="outlined" href={vurl} target="_blank">
                       View
                     </Button>
-                  ) : null}
+                  ) : null; })()}
                 </Box>
               ))}
             </Box>
