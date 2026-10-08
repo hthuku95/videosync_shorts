@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { Box, Container, Typography, Button, Card, CardContent, Chip } from '@mui/material';
 import { PATHS } from '@/routes/paths';
+import { Footer } from '@/components/common/Footer';
 
 export function HomePage() {
   const [params] = useSearchParams();
@@ -11,6 +12,7 @@ export function HomePage() {
   }, [params]);
 
   return (
+    <>
     <Container maxWidth="lg">
       <Box sx={{ py: { xs: 4, md: 8 }, textAlign: 'center' }}>
         <Chip label="Daily Manim motion graphics" color="primary" sx={{ mb: 2 }} />
@@ -43,5 +45,7 @@ export function HomePage() {
         </CardContent>
       </Card>
     </Container>
+    <Footer appName="VideoSync Motion" />
+  </>
   );
 }

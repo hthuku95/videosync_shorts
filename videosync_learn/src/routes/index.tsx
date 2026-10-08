@@ -4,6 +4,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { TermsPage, PrivacyPage, RefundPage, ContactPage } from '@/pages/Legal/LegalPages';
 import { HomePage } from '@/pages/Home/HomePage';
 import { LoginPage } from '@/pages/Auth/LoginPage';
 import { RegisterPage } from '@/pages/Auth/RegisterPage';
@@ -72,6 +73,24 @@ export const router = createBrowserRouter([
         ),
       },
     ],
+  },
+
+  // Legal pages (public, no layout)
+  {
+    path: '/terms',
+    element: <TermsPage />,
+  },
+  {
+    path: '/privacy',
+    element: <PrivacyPage />,
+  },
+  {
+    path: '/refund',
+    element: <RefundPage />,
+  },
+  {
+    path: '/contact',
+    element: <ContactPage />,
   },
 
   // 404 page (no layout)
