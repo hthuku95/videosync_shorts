@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import {
   Box, Typography, Button, Card, CardContent, Chip, CircularProgress,
-  Alert, Dialog, DialogTitle, DialogContent, LinearProgress, Divider,
+  Alert, Dialog, DialogTitle, DialogContent, LinearProgress,
+  Tabs, Tab,
 } from '@mui/material';
 import { campaignService, type Campaign, type CampaignPost } from '@/services/campaign.service';
+import { UsdcPayDialog } from '@/components/payments/UsdcPayDialog';
 import { usePayPalScript } from '@/hooks/usePayPalScript';
 import { PATHS } from '@/routes/paths';
 
@@ -79,7 +81,7 @@ export default function CampaignDetailPage() {
           sx={{ mb: 3 }}
           action={
             <Button color="inherit" size="small" variant="contained" onClick={() => setPayOpen(true)}>
-              Pay $199/mo
+              Pay $149/mo
             </Button>
           }
         >
@@ -143,9 +145,28 @@ function PayDialog({
   const paypalRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [tab, setTab] = useState<0 | 1>(0);
+  const [amountUsd, setAmountUsd] = useState('$199.00');
 
   useEffect(() => {
-    if (!open || !loaded || !window.paypal?.Buttons || !paypalRef.current) return;
+    if (!open) return;
+    setTab(0);
+    setError('');
+    // Pull the authoritative price for the USDC tab.
+    campaignService
+      .paySpec(campaignId)
+      .then((spec: any) => {
+        const cents =
+          spec?.accepts?.[0]?.max_amount_required != null
+            ? Number(spec.accepts[0].max_amount_required) / 1e4
+            : 19900;
+        setAmountUsd(`$${(cents / 100).toFixed(2)}`);
+      })
+      .catch(() => {});
+  }, [open, campaignId]);
+
+  useEffect(() => {
+    if (!open || tab !== 0 || !loaded || !window.paypal?.Buttons || !paypalRef.current) return;
     paypalRef.current.innerHTML = '';
     window.paypal
       .Buttons({
@@ -157,7 +178,7 @@ function PayDialog({
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-              'X-App': 'clips',
+              'X-App': 'motion',
             },
           }).then((r) => r.json());
           if (!res.success || !res.paypal_order_id) throw new Error(res.error || 'Failed to create order');
@@ -179,7 +200,7 @@ function PayDialog({
         },
       })
       .render(paypalRef.current);
-  }, [open, loaded, campaignId, onPaid, onClose]);
+  }, [open, tab, loaded, campaignId, onPaid, onClose]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -188,24 +209,35 @@ function PayDialog({
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           Daily Kick + Twitch clip campaigns, up to 3 posts a day. Cancel anytime.
         </Typography>
+        <Tabs
+          value={tab}
+          onChange={(_, v: 0 | 1) => {
+            setTab(v);
+            setError('');
+          }}
+          sx={{ mb: 2 }}
+        >
+          <Tab label="PayPal / Card" />
+          <Tab label="USDC (Base)" />
+        </Tabs>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
-        {sdkError ? (
-          <Alert severity="warning">{sdkError}</Alert>
-        ) : busy ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-            <CircularProgress />
-          </Box>
+        {tab === 0 ? (
+          sdkError ? (
+            <Alert severity="warning">{sdkError}</Alert>
+          ) : busy ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box ref={paypalRef} sx={{ minHeight: 90 }} />
+          )
         ) : (
-          <Box ref={paypalRef} sx={{ minHeight: 90 }} />
+          <UsdcPayDialog campaignId={campaignId} amountUsd={amountUsd} onPaid={() => { onPaid(); onClose(); }} />
         )}
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="caption" color="text.secondary">
-          Prefer USDC? Contact us after signup and we'll activate your campaign on receipt.
-        </Typography>
       </DialogContent>
     </Dialog>
   );
