@@ -55,6 +55,10 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
       sx={{
         width: DRAWER_WIDTH,
         flexShrink: 0,
+        // Permanent drawer root must fill the sticky wrapper's fixed height;
+        // otherwise the paper's height:100% resolves against content height
+        // and the sidebar background ends halfway down the page.
+        height: variant === 'permanent' ? '100%' : undefined,
         [`& .MuiDrawer-paper`]: {
           width: DRAWER_WIDTH,
           boxSizing: 'border-box',
