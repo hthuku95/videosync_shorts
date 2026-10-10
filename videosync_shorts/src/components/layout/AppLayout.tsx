@@ -49,7 +49,11 @@ export function AppLayout() {
           minHeight: '100dvh',
         }}
       >
-        <TopBar onMenuClick={handleDrawerToggle} shiftWidth={!isMobile ? sidebarWidth : 0} />
+        <TopBar
+          onMenuClick={handleDrawerToggle}
+          shiftWidth={!isMobile ? sidebarWidth : 0}
+          showTitle={isMobile}
+        />
         <Toolbar />
 
         <Box

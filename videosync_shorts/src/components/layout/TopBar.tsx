@@ -21,9 +21,11 @@ interface TopBarProps {
   onMenuClick: () => void;
   /** Desktop rail width in px: navbar starts at the sidebar's right edge. 0 = full width. */
   shiftWidth?: number;
+  /** Show the app title (mobile, where the sidebar brand is hidden). */
+  showTitle?: boolean;
 }
 
-export function TopBar({ onMenuClick, shiftWidth = 0 }: TopBarProps) {
+export function TopBar({ onMenuClick, shiftWidth = 0, showTitle = false }: TopBarProps) {
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useUIStore();
   const { logout, user } = useAuth();
@@ -66,9 +68,24 @@ export function TopBar({ onMenuClick, shiftWidth = 0 }: TopBarProps) {
           <MenuIcon />
         </IconButton>
 
-        {/* App title lives in the sidebar brand block; repeating it here
-            is redundant on sidebar pages, so a spacer keeps actions right-aligned. */}
-        <Box sx={{ flexGrow: 1 }} />
+        {showTitle ? (
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              flexGrow: 1,
+            }}
+          >
+            VideoSync Shorts
+          </Typography>
+        ) : (
+          /* App title lives in the sidebar brand block; on desktop a spacer
+             keeps actions right-aligned instead of repeating it. */
+          <Box sx={{ flexGrow: 1 }} />
+        )}
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Chip
