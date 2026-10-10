@@ -15,16 +15,15 @@ import { useNavigate } from 'react-router-dom';
 import { useUIStore, getEffectiveTheme } from '@/stores/uiStore';
 import { useAuth } from '@/hooks/useAuth';
 import { PATHS } from '@/routes/paths';
-import { DRAWER_WIDTH } from './Sidebar';
 
 
 interface TopBarProps {
   onMenuClick: () => void;
-  /** Desktop with permanent sidebar: start at the sidebar's right edge. */
-  shifted?: boolean;
+  /** Desktop rail width in px: navbar starts at the sidebar's right edge. 0 = full width. */
+  shiftWidth?: number;
 }
 
-export function TopBar({ onMenuClick, shifted = false }: TopBarProps) {
+export function TopBar({ onMenuClick, shiftWidth = 0 }: TopBarProps) {
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useUIStore();
   const { logout, user } = useAuth();
@@ -50,9 +49,9 @@ export function TopBar({ onMenuClick, shifted = false }: TopBarProps) {
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
         borderRadius: 0,
-        ...(shifted && {
-          ml: `${DRAWER_WIDTH}px`,
-          width: `calc(100% - ${DRAWER_WIDTH}px)`,
+        ...(shiftWidth > 0 && {
+          ml: `${shiftWidth}px`,
+          width: `calc(100% - ${shiftWidth}px)`,
         }),
       }}
     >

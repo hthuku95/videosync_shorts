@@ -3,15 +3,22 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TopBar } from './TopBar';
-import { Sidebar, DRAWER_WIDTH } from './Sidebar';
+import { Sidebar } from './Sidebar';
 import { Footer } from '@/components/common/Footer';
-import { useUIStore } from '@/stores/uiStore';
+import { useUIStore, SIDEBAR_MIN_WIDTH, SIDEBAR_MAX_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from '@/stores/uiStore';
 
 export function AppLayout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { sidebarOpen, setSidebarOpen } = useUIStore();
   const location = useLocation();
+  // The one rail width: column margin + navbar shift derive from it, so all
+  // three edges always share the sidebar's right edge (no gap, no overlap).
+  const sidebarWidth = useUIStore((s) =>
+    s.sidebarCollapsed
+      ? SIDEBAR_COLLAPSED_WIDTH
+      : Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, s.sidebarWidth)),
+  );
 
   useEffect(() => {
     setSidebarOpen(!isMobile);
@@ -36,13 +43,13 @@ export function AppLayout() {
         sx={{
           flexGrow: 1,
           minWidth: 0,
-          ml: isMobile ? 0 : `${DRAWER_WIDTH}px`,
+          ml: isMobile ? 0 : `${sidebarWidth}px`,
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100dvh',
         }}
       >
-        <TopBar onMenuClick={handleDrawerToggle} shifted={!isMobile} />
+        <TopBar onMenuClick={handleDrawerToggle} shiftWidth={!isMobile ? sidebarWidth : 0} />
         <Toolbar />
 
         <Box
