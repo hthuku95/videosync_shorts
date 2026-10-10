@@ -66,18 +66,9 @@ export function TopBar({ onMenuClick, shiftWidth = 0 }: TopBarProps) {
           <MenuIcon />
         </IconButton>
 
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
-            flexGrow: 1,
-          }}
-        >
-          VideoSync Shorts
-        </Typography>
+        {/* App title lives in the sidebar brand block; repeating it here
+            is redundant on sidebar pages, so a spacer keeps actions right-aligned. */}
+        <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Chip

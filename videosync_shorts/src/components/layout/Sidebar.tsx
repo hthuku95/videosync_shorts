@@ -7,7 +7,6 @@ import {
   ListItemText,
   Toolbar,
   Box,
-  Divider,
   IconButton,
   Tooltip,
 } from '@mui/material';
@@ -188,8 +187,6 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
           )}
         </Box>
       </Toolbar>
-
-      <Divider />
 
       <List sx={{ px: 1, py: 1, flex: '1 1 auto', overflowY: 'auto', overflowX: 'hidden' }}>
         {NAV_ITEMS.map((item) =>
