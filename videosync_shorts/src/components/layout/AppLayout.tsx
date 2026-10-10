@@ -21,7 +21,7 @@ export function AppLayout() {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', height: '100dvh', overflow: 'hidden' }}>
       <TopBar onMenuClick={handleDrawerToggle} />
 
       {isMobile ? (
@@ -37,7 +37,10 @@ export function AppLayout() {
           p: { xs: 2, sm: 3 },
           width: isMobile ? '100%' : `calc(100% - ${DRAWER_WIDTH}px)`,
           minWidth: 0,
-          overflow: 'auto',
+          minHeight: 0,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -50,7 +53,7 @@ export function AppLayout() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            style={{ flex: 1 }}
+            style={{ flex: '1 0 auto', minHeight: 'min-content' }}
           >
             <Outlet />
           </motion.div>
