@@ -55,18 +55,16 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
       sx={{
         width: DRAWER_WIDTH,
         flexShrink: 0,
-        // Permanent drawer root must fill the sticky wrapper's fixed height;
-        // otherwise the paper's height:100% resolves against content height
-        // and the sidebar background ends halfway down the page.
-        height: variant === 'permanent' ? '100%' : undefined,
         [`& .MuiDrawer-paper`]: {
           width: DRAWER_WIDTH,
           boxSizing: 'border-box',
-          // Permanent drawers must participate in the flex row (not overlay
-          // it): static positioning keeps the paper inside the layout so it
-          // stops above the full-width footer instead of covering it.
-          position: variant === 'permanent' ? 'static' : undefined,
-          height: variant === 'permanent' ? '100%' : undefined,
+          // Permanent drawer is a fixed full-height rail (ChatGPT-style):
+          // it owns the left screen edge top-to-bottom, and the navbar +
+          // footer begin at its right edge instead of overlapping it.
+          position: variant === 'permanent' ? 'fixed' : undefined,
+          top: variant === 'permanent' ? 0 : undefined,
+          left: variant === 'permanent' ? 0 : undefined,
+          height: variant === 'permanent' ? '100dvh' : undefined,
           borderRadius: 0,
           borderRight: '1px solid',
           borderColor: 'divider',

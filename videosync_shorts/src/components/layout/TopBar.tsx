@@ -15,13 +15,16 @@ import { useNavigate } from 'react-router-dom';
 import { useUIStore, getEffectiveTheme } from '@/stores/uiStore';
 import { useAuth } from '@/hooks/useAuth';
 import { PATHS } from '@/routes/paths';
+import { DRAWER_WIDTH } from './Sidebar';
 
 
 interface TopBarProps {
   onMenuClick: () => void;
+  /** Desktop with permanent sidebar: start at the sidebar's right edge. */
+  shifted?: boolean;
 }
 
-export function TopBar({ onMenuClick }: TopBarProps) {
+export function TopBar({ onMenuClick, shifted = false }: TopBarProps) {
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useUIStore();
   const { logout, user } = useAuth();
@@ -41,7 +44,18 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   };
 
   return (
-    <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, borderRadius: 0 }}>
+    <AppBar
+      elevation={0}
+      position="fixed"
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        borderRadius: 0,
+        ...(shifted && {
+          ml: `${DRAWER_WIDTH}px`,
+          width: `calc(100% - ${DRAWER_WIDTH}px)`,
+        }),
+      }}
+    >
       <Toolbar>
         <IconButton
           color="inherit"
