@@ -19,6 +19,7 @@ export default function NewCampaignPage() {
   const [serviceType, setServiceType] = useState<string>('manim_explainer');
   const [brief, setBrief] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
+  const [postsPerDay, setPostsPerDay] = useState(5);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -41,7 +42,7 @@ export default function NewCampaignPage() {
           { time: '17:00', platform: 'youtube' },
         ],
         platforms: [],
-        posts_per_day: 3,
+        posts_per_day: postsPerDay,
         start_date: new Date(todayStr()).toISOString(),
         end_date: new Date(todayStr(30)).toISOString(),
       });
@@ -99,6 +100,20 @@ export default function NewCampaignPage() {
             fullWidth
             placeholder="https://kick.com/neon or https://twitch.tv/jynxzi"
           />
+          <TextField
+            select
+            label="Posts per day"
+            value={postsPerDay}
+            onChange={(e) => setPostsPerDay(Math.min(10, Math.max(1, Number(e.target.value))))}
+            fullWidth
+            helperText="Each post is a full render (~10-25 min). 5/day is the recommended pace."
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+              <MenuItem key={n} value={n}>
+                {n} post{n > 1 ? 's' : ''} per day
+              </MenuItem>
+            ))}
+          </TextField>
           <Button variant="contained" size="large" onClick={submit} disabled={submitting}>
             {submitting ? 'Creating…' : 'Create Campaign'}
           </Button>

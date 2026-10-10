@@ -17,6 +17,8 @@ export default function CampaignDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [payOpen, setPayOpen] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [processMsg, setProcessMsg] = useState('');
 
   const load = async () => {
     if (!id) return;
@@ -69,12 +71,38 @@ export default function CampaignDetailPage() {
             {campaign.total_posts_published}/{campaign.total_posts_planned} posted
           </Typography>
         </Box>
+        <Button
+          size="small"
+          variant="outlined"
+          disabled={processing}
+          onClick={async () => {
+            setProcessing(true);
+            setProcessMsg('');
+            try {
+              const res = await campaignService.processNow(campaign.id);
+              const ok = (res.posts || []).filter((x: any) => !x.error).length;
+              setProcessMsg(res.success ? `Render started for ${ok} post(s) — watch statuses below.` : (res.error || 'Failed to start'));
+              load();
+            } catch (e: any) {
+              setProcessMsg(e?.response?.data?.error || e.message || 'Failed to start');
+            } finally {
+              setProcessing(false);
+            }
+          }}
+        >
+          {processing ? 'Starting…' : 'Process Now'}
+        </Button>
         <Chip
           label={campaign.status}
           color={campaign.status === 'active' ? 'success' : campaign.status === 'pending_payment' ? 'warning' : 'default'}
         />
       </Box>
 
+      {processMsg && (
+        <Alert severity={processMsg.startsWith('Render started') ? 'success' : 'error'} sx={{ mb: 2 }} onClose={() => setProcessMsg('')}>
+          {processMsg}
+        </Alert>
+      )}
       {needsPayment && (
         <Alert
           severity="warning"

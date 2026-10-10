@@ -125,6 +125,11 @@ export const campaignService = {
     return resp.data;
   },
 
+  async processNow(id: string): Promise<{ success: boolean; message?: string; posts?: Array<{ id: string; status: string; error?: string | null }>; error?: string }> {
+    const resp = await api.post(`/api/campaigns/${id}/process-now`, {});
+    return resp.data;
+  },
+
   async pause(id: string): Promise<void> {
     await api.post(`/api/campaigns/${id}/pause`, {}, { headers: appHeaders });
   },
