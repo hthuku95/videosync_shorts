@@ -36,7 +36,7 @@ export function LoginForm() {
         Sign In
       </Typography>
       <Typography variant="body2" color="text.secondary" textAlign="center" mb={3}>
-        Welcome back to Website Video
+        Welcome back to VideoSync Motion
       </Typography>
 
       {error && (

@@ -51,10 +51,10 @@ export function AuthLayout() {
               variant="h5"
               sx={{ fontWeight: 800, color: '#eef0ff', letterSpacing: '-0.02em' }}
             >
-              Website Video
+              VideoSync Motion
             </Typography>
             <Typography variant="body2" sx={{ color: 'rgba(238,240,255,0.65)', mt: 0.5 }}>
-              AI videos from your website URL
+              Daily motion-graphics campaigns
             </Typography>
           </Box>
 

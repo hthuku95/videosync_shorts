@@ -22,7 +22,8 @@ export function AppLayout() {
   };
 
   return (
-    <Box sx={{ display: 'flex', height: '100dvh', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
+      <Box sx={{ display: 'flex', flex: '1 1 auto', minHeight: 0 }}>
       <TopBar onMenuClick={handleDrawerToggle} />
 
       {isMobile ? (
@@ -59,8 +60,9 @@ export function AppLayout() {
             <Outlet />
           </motion.div>
         </AnimatePresence>
-        <Footer appName="VideoSync Motion" />
       </Box>
+      </Box>
+      <Footer appName="VideoSync Motion" />
     </Box>
   );
 }

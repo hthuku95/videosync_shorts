@@ -63,7 +63,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
             flexGrow: 1,
           }}
         >
-          Website Video
+          VideoSync Shorts
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

@@ -72,7 +72,7 @@ export function RegisterForm() {
         Create Account
       </Typography>
       <Typography variant="body2" color="text.secondary" textAlign="center" mb={3}>
-        Get your videos from your website URL
+        Daily motion-graphics campaigns
       </Typography>
 
       {error && (

@@ -66,11 +66,11 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
           <Box
             component="img"
             src="/favicon.svg"
-            alt="Website Video"
+            alt="VideoSync Motion"
             sx={{ width: 28, height: 28 }}
           />
           <Box>
-            <Box sx={{ fontWeight: 800, fontSize: 15, lineHeight: 1.1 }}>Website Video</Box>
+            <Box sx={{ fontWeight: 800, fontSize: 15, lineHeight: 1.1 }}>VideoSync Motion</Box>
             <Box sx={{ fontSize: 11, color: 'text.secondary', lineHeight: 1.2 }}>
               URL to Video
             </Box>
