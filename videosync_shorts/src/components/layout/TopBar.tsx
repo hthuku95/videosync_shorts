@@ -99,7 +99,7 @@ export function TopBar({ onMenuClick, shiftWidth = 0, showTitle = false }: TopBa
           {user?.username && (
             <Typography
               variant="body2"
-              sx={{ color: 'rgba(255,255,255,0.85)', display: { xs: 'none', sm: 'block' } }}
+              sx={{ color: 'text.secondary', display: { xs: 'none', sm: 'block' } }}
             >
               {user.username}
             </Typography>
@@ -110,7 +110,7 @@ export function TopBar({ onMenuClick, shiftWidth = 0, showTitle = false }: TopBa
           </IconButton>
 
           <IconButton color="inherit" onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <Avatar sx={{ width: 32, height: 32, bgcolor: 'rgba(255,255,255,0.2)' }}>
+            <Avatar sx={{ width: 32, height: 32, bgcolor: 'action.selected' }}>
               <AccountCircle />
             </Avatar>
           </IconButton>

@@ -79,8 +79,13 @@ export const lightTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#4f46e5',
+          // Light navbar = white paper + hairline seam (ChatGPT-style).
+          // The old saturated indigo bar fought the white sidebar; the dark
+          // theme keeps its own dark bar (see darkTheme.ts).
+          backgroundColor: '#ffffff',
+          color: '#1e1b2e',
           boxShadow: 'none',
+          borderBottom: '1px solid rgba(30,27,46,0.12)',
         },
       },
     },
