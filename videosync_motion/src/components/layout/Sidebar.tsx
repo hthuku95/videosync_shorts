@@ -58,6 +58,14 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
         [`& .MuiDrawer-paper`]: {
           width: DRAWER_WIDTH,
           boxSizing: 'border-box',
+          // Permanent drawers must participate in the flex row (not overlay
+          // it): static positioning keeps the paper inside the layout so it
+          // stops above the full-width footer instead of covering it.
+          position: variant === 'permanent' ? 'static' : undefined,
+          height: variant === 'permanent' ? '100%' : undefined,
+          borderRadius: 0,
+          borderRight: '1px solid',
+          borderColor: 'divider',
         },
       }}
     >
@@ -72,7 +80,7 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
           <Box>
             <Box sx={{ fontWeight: 800, fontSize: 15, lineHeight: 1.1 }}>VideoSync Motion</Box>
             <Box sx={{ fontSize: 11, color: 'text.secondary', lineHeight: 1.2 }}>
-              URL to Video
+              Motion graphics
             </Box>
           </Box>
         </Box>

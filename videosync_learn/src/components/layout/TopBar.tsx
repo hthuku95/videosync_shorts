@@ -41,7 +41,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   };
 
   return (
-    <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, borderRadius: 0 }}>
       <Toolbar>
         <IconButton
           color="inherit"
