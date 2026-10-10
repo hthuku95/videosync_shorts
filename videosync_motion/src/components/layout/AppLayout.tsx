@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TopBar } from './TopBar';
 import { Sidebar, DRAWER_WIDTH } from './Sidebar';
+import { Footer } from '@/components/common/Footer';
 import { useUIStore } from '@/stores/uiStore';
 
 export function AppLayout() {
@@ -58,6 +59,7 @@ export function AppLayout() {
             <Outlet />
           </motion.div>
         </AnimatePresence>
+        <Footer appName="VideoSync Motion" />
       </Box>
     </Box>
   );
