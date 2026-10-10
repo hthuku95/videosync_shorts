@@ -48,7 +48,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
           aria-label="open drawer"
           edge="start"
           onClick={onMenuClick}
-          sx={{ mr: 1.5 }}
+          sx={{ mr: 1.5, display: { md: 'none' } }}
         >
           <MenuIcon />
         </IconButton>

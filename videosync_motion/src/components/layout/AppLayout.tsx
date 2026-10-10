@@ -22,14 +22,27 @@ export function AppLayout() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
-      <Box sx={{ display: 'flex', flex: '1 1 auto', minHeight: 0 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
       <TopBar onMenuClick={handleDrawerToggle} />
-
+      <Toolbar />
+      <Box sx={{ display: 'flex', flex: '1 1 auto', alignItems: 'flex-start' }}>
       {isMobile ? (
         <Sidebar open={sidebarOpen} onClose={handleDrawerToggle} variant="temporary" />
       ) : (
-        <Sidebar open={sidebarOpen} variant="permanent" />
+        <Box
+          sx={{
+            width: DRAWER_WIDTH,
+            flexShrink: 0,
+            position: 'sticky',
+            top: 64,
+            height: 'calc(100dvh - 64px)',
+            overflowY: 'auto',
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+          }}
+        >
+          <Sidebar open={sidebarOpen} variant="permanent" />
+        </Box>
       )}
 
       <Box
@@ -37,17 +50,12 @@ export function AppLayout() {
         sx={{
           flexGrow: 1,
           p: { xs: 2, sm: 3 },
-          width: isMobile ? '100%' : `calc(100% - ${DRAWER_WIDTH}px)`,
           minWidth: 0,
-          minHeight: 0,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          WebkitOverflowScrolling: 'touch',
+          overflowX: 'clip',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
-        <Toolbar />
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
