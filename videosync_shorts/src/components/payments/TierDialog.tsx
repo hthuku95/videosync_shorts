@@ -88,8 +88,12 @@ export function TierDialog({
             </Card>
           ))}
         </Box>
-        {tier.current ? (
-          <Alert severity="info">This is your current tier.</Alert>
+        {tier.current || tier.id === 'base' ? (
+          <Alert severity="info">
+            {tier.id === 'base'
+              ? `Starter is included in your ${appName} subscription — 20 connected accounts, no separate payment. Choose an Agency tier above to raise the cap.`
+              : 'This is your current tier.'}
+          </Alert>
         ) : (
           <>
             <Tabs value={tab} onChange={(_, v: 0 | 1) => setTab(v)} sx={{ mb: 2 }}>
