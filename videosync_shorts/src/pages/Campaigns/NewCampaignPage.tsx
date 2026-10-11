@@ -106,7 +106,7 @@ export default function NewCampaignPage() {
             value={postsPerDay}
             onChange={(e) => setPostsPerDay(Math.min(10, Math.max(1, Number(e.target.value))))}
             fullWidth
-            helperText="Each post is a full render (~10-25 min). 5/day is the recommended pace."
+            helperText="Each post is cut fresh from the latest upload and captioned automatically (~minutes per clip). 5/day is the recommended pace."
           >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
               <MenuItem key={n} value={n}>

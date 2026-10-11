@@ -55,12 +55,16 @@ export interface CreateCampaignRequest {
 /** All campaign calls carry X-App so the backend prices + scopes by app. */
 const appHeaders = { 'X-App': CLIPS_APP };
 
+/** Services owned by this app (§65): foreign campaigns never surface here. */
+export const APP_SERVICES = ['youtube_clipping', 'clipping'];
+
 export const campaignService = {
   async list(): Promise<Campaign[]> {
     const resp = await api.get<{ success: boolean; campaigns: Campaign[] }>('/api/campaigns', {
       headers: appHeaders,
     });
-    return resp.data.campaigns || [];
+    // Belt-and-suspenders with the backend X-App scope: keep only our services.
+    return (resp.data.campaigns || []).filter((c) => APP_SERVICES.includes(c.service_type));
   },
 
   async get(id: string): Promise<{ campaign: Campaign; posts: CampaignPost[] }> {
