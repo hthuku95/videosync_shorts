@@ -209,33 +209,49 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
         )}
       </List>
 
-      {/* Pinned bottom section: Settings + collapse toggle, ~16px off the bottom. */}
-      <Box sx={{ px: 1, pb: 2 }}>
-        <List disablePadding>
-          {collapsed ? (
-            renderNavButton('Settings', <SettingsIcon />, PATHS.SETTINGS, location.pathname === PATHS.SETTINGS)
-          ) : (
-            <ListItem disablePadding>
-              <ListItemButton
-                selected={location.pathname === PATHS.SETTINGS}
-                onClick={() => handleNavigation(PATHS.SETTINGS)}
-              >
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
-            </ListItem>
-          )}
-        </List>
+      {/* Bottom row: Settings + collapse chevron side by side on one
+          height, ~16px off the bottom. */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          gap: 0.5,
+          px: 1,
+          pb: 2,
+        }}
+      >
+        {collapsed ? (
+          <Tooltip title="Settings" placement="right">
+            <IconButton
+              size="small"
+              onClick={() => handleNavigation(PATHS.SETTINGS)}
+              aria-label="Settings"
+              sx={
+                location.pathname === PATHS.SETTINGS ? { color: 'primary.main' } : undefined
+              }
+            >
+              <SettingsIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <ListItemButton
+            selected={location.pathname === PATHS.SETTINGS}
+            onClick={() => handleNavigation(PATHS.SETTINGS)}
+            sx={{ flexGrow: 1, minWidth: 0 }}
+          >
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </ListItemButton>
+        )}
         {variant === 'permanent' && (
-          <Box sx={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end', pt: 0.5 }}>
-            <Tooltip title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} placement="right">
-              <IconButton size="small" onClick={toggleSidebarCollapsed} aria-label="toggle sidebar">
-                {collapsed ? <ExpandIcon /> : <CollapseIcon />}
-              </IconButton>
-            </Tooltip>
-          </Box>
+          <Tooltip title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} placement="right">
+            <IconButton size="small" onClick={toggleSidebarCollapsed} aria-label="toggle sidebar">
+              {collapsed ? <ExpandIcon /> : <CollapseIcon />}
+            </IconButton>
+          </Tooltip>
         )}
       </Box>
 
