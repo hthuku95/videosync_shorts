@@ -153,7 +153,10 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
               flexShrink: 0,
               [`& .MuiDrawer-paper`]: {
                 width: railWidth,
+                height: '100%',
                 boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column',
                 borderRadius: 0,
                 borderRight: '1px solid',
                 borderColor: 'divider',
@@ -204,33 +207,37 @@ export function Sidebar({ open, onClose, variant }: SidebarProps) {
             </ListItem>
           ),
         )}
-
-        {collapsed ? (
-          renderNavButton('Settings', <SettingsIcon />, PATHS.SETTINGS, location.pathname === PATHS.SETTINGS)
-        ) : (
-          <ListItem disablePadding sx={{ mb: 0.5 }}>
-            <ListItemButton
-              selected={location.pathname === PATHS.SETTINGS}
-              onClick={() => handleNavigation(PATHS.SETTINGS)}
-            >
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-            </ListItemButton>
-          </ListItem>
-        )}
       </List>
 
-      {variant === 'permanent' && (
-        <Box sx={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end', p: 1 }}>
-          <Tooltip title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} placement="right">
-            <IconButton size="small" onClick={toggleSidebarCollapsed} aria-label="toggle sidebar">
-              {collapsed ? <ExpandIcon /> : <CollapseIcon />}
-            </IconButton>
-          </Tooltip>
-        </Box>
-      )}
+      {/* Pinned bottom section: Settings + collapse toggle, ~16px off the bottom. */}
+      <Box sx={{ px: 1, pb: 2 }}>
+        <List disablePadding>
+          {collapsed ? (
+            renderNavButton('Settings', <SettingsIcon />, PATHS.SETTINGS, location.pathname === PATHS.SETTINGS)
+          ) : (
+            <ListItem disablePadding>
+              <ListItemButton
+                selected={location.pathname === PATHS.SETTINGS}
+                onClick={() => handleNavigation(PATHS.SETTINGS)}
+              >
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemButton>
+            </ListItem>
+          )}
+        </List>
+        {variant === 'permanent' && (
+          <Box sx={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end', pt: 0.5 }}>
+            <Tooltip title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} placement="right">
+              <IconButton size="small" onClick={toggleSidebarCollapsed} aria-label="toggle sidebar">
+                {collapsed ? <ExpandIcon /> : <CollapseIcon />}
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+      </Box>
 
       {/* Drag handle on the rail edge (ChatGPT-style resize). */}
       {variant === 'permanent' && !collapsed && (
