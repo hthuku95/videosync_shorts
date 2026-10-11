@@ -92,7 +92,15 @@ export function TopBar({ onMenuClick, shiftWidth = 0, showTitle = false }: TopBa
             label="+ New Campaign"
             size="small"
             color="secondary"
-            sx={{ display: { xs: 'none', sm: 'inline-flex' }, cursor: 'pointer' }}
+            sx={{
+              display: { xs: 'none', sm: 'inline-flex' },
+              cursor: 'pointer',
+              // Solid fill beats the pale MuiChip theme tint: white-on-tint
+              // was unreadable in the light theme.
+              bgcolor: 'secondary.main',
+              color: 'secondary.contrastText',
+              fontWeight: 600,
+            }}
             onClick={() => navigate(PATHS.CAMPAIGNS_NEW)}
           />
 
@@ -110,7 +118,16 @@ export function TopBar({ onMenuClick, shiftWidth = 0, showTitle = false }: TopBa
           </IconButton>
 
           <IconButton color="inherit" onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <Avatar sx={{ width: 32, height: 32, bgcolor: 'action.selected' }}>
+            <Avatar
+              sx={{
+                width: 32,
+                height: 32,
+                // Solid brand fill: the faint action-selected tint washed out
+                // on the white navbar. contrastText keeps it right in dark mode too.
+                bgcolor: 'primary.main',
+                color: 'primary.contrastText',
+              }}
+            >
               <AccountCircle />
             </Avatar>
           </IconButton>
