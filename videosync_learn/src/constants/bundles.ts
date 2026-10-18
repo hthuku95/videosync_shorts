@@ -1,42 +1,42 @@
-import type { Bundle } from '@/types/websiteVideo.types';
+import type { Bundle } from '@/types/educationVideo.types';
 
-// Static configuration for the Website-URL→Video service.
+// Static configuration for the Education Video (animated lesson) service.
 // These must match the offers registered in the Rust backend (PAYPAL_OFFERS
-// in src/handlers/paypal.rs): website-video-10 ($50 / 10 credits) and
-// website-video-30 ($100 / 30 credits).
+// in src/handlers/paypal.rs): education-video-10 ($50 / 10 credits) and
+// education-video-30 ($100 / 30 credits).
 export const BUNDLES: Bundle[] = [
   {
-    id: 'website-video-10',
-    name: 'Starter',
+    id: 'education-video-10',
+    name: 'Lesson Starter',
     credits: 10,
     priceUsd: '50.00',
     priceCents: 5000,
-    description: '10 AI-generated videos from your website URL',
+    description: '10 animated lesson videos from your topic or course',
     features: [
-      '10 videos generated from your site',
-      'Landing page hero & product demos',
-      '4K-ready animated output',
-      'Download & reuse anywhere',
+      '10 lesson videos generated from your topic',
+      'Animated explainers with diagrams',
+      'Narration-ready educational output',
+      'Download & reuse in any LMS',
     ],
   },
   {
-    id: 'website-video-30',
-    name: 'Pro',
+    id: 'education-video-30',
+    name: 'Lesson Pro',
     credits: 30,
     priceUsd: '100.00',
     priceCents: 10000,
-    description: 'Up to 30 AI-generated videos from your website URL',
+    description: 'Up to 30 animated lesson videos from your topic or course',
     features: [
-      'Up to 30 videos generated from your site',
-      'Best value per video',
-      'Landing page hero & product demos',
+      'Up to 30 lesson videos generated',
+      'Best value per lesson',
+      'Animated explainers with diagrams',
       'Priority rendering queue',
-      'Download & reuse anywhere',
+      'Download & reuse in any LMS',
     ],
   },
 ];
 
-export const DEFAULT_BUNDLE_ID = 'website-video-10';
+export const DEFAULT_BUNDLE_ID = 'education-video-10';
 
 export function findBundle(id: string): Bundle | undefined {
   return BUNDLES.find((b) => b.id === id);

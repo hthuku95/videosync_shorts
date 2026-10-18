@@ -1,5 +1,5 @@
 import { Chip } from '@mui/material';
-import type { DeliveryStatus } from '@/types/websiteVideo.types';
+import type { DeliveryStatus } from '@/types/educationVideo.types';
 
 const STATE_COLOR: Record<DeliveryStatus, 'success' | 'info' | 'warning' | 'error'> = {
   completed: 'success',

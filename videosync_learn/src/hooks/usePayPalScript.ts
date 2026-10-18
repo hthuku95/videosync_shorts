@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { websiteVideoService } from '@/services/websiteVideo.service';
+import { educationVideoService } from '@/services/educationVideo.service';
 
 interface UsePayPalScriptResult {
   loaded: boolean;
@@ -14,7 +14,7 @@ interface UsePayPalScriptResult {
 export function usePayPalScript(): UsePayPalScriptResult {
   const { data } = useQuery({
     queryKey: ['paypal', 'config'],
-    queryFn: () => websiteVideoService.getPayPalConfig(),
+    queryFn: () => educationVideoService.getPayPalConfig(),
     staleTime: Infinity,
     retry: false,
   });

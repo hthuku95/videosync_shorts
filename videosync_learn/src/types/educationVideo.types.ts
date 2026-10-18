@@ -1,4 +1,4 @@
-// Types for the Website-URL→Video service
+// Types for the Education Video (animated lesson) service
 
 export interface Bundle {
   id: string;
@@ -17,9 +17,9 @@ export interface CreditsSummary {
 }
 
 export interface GenerateVideoRequest {
-  source_url: string;
-  product_name?: string;
+  topic: string;
   brief?: string;
+  source_url?: string;
   style?: string;
   duration?: number;
 }

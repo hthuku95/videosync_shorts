@@ -9,6 +9,9 @@ export const PATHS = {
   DASHBOARD: '/dashboard',
   CAMPAIGNS_NEW: '/campaigns/new',
   CAMPAIGN_DETAIL: '/campaigns/:id',
+  LESSONS: '/lessons',
+  LESSONS_NEW: '/lessons/new',
+  BUNDLES: '/pricing',
   SETTINGS: '/settings',
 
   NOT_FOUND: '/404',

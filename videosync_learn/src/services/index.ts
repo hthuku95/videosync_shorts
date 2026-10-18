@@ -7,4 +7,4 @@ export { api } from './api';
 
 // Export services
 export * from './auth.service';
-export * from './websiteVideo.service';
+export * from './educationVideo.service';

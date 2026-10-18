@@ -12,6 +12,9 @@ import { OAuthCallbackPage } from '@/pages/Auth/OAuthCallbackPage';
 import CampaignsPage from '@/pages/Campaigns/CampaignsPage';
 import NewCampaignPage from '@/pages/Campaigns/NewCampaignPage';
 import CampaignDetailPage from '@/pages/Campaigns/CampaignDetailPage';
+import { LessonsPage } from '@/pages/Lessons/LessonsPage';
+import { GenerateLessonPage } from '@/pages/Generate/GenerateLessonPage';
+import { BundlesPage } from '@/pages/Bundles/BundlesPage';
 import { SettingsPage } from '@/pages/Settings/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage';
 
@@ -61,6 +64,30 @@ export const router = createBrowserRouter([
         element: (
           <ErrorBoundary>
             <CampaignDetailPage />
+          </ErrorBoundary>
+        ),
+      },
+      {
+        path: PATHS.LESSONS,
+        element: (
+          <ErrorBoundary>
+            <LessonsPage />
+          </ErrorBoundary>
+        ),
+      },
+      {
+        path: PATHS.LESSONS_NEW,
+        element: (
+          <ErrorBoundary>
+            <GenerateLessonPage />
+          </ErrorBoundary>
+        ),
+      },
+      {
+        path: PATHS.BUNDLES,
+        element: (
+          <ErrorBoundary>
+            <BundlesPage />
           </ErrorBoundary>
         ),
       },

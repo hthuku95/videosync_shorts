@@ -9,24 +9,24 @@ import type {
   SettleResponse,
   GenerateResponse,
   VideosResponse,
-} from '@/types/websiteVideo.types';
+} from '@/types/educationVideo.types';
 
 /**
- * Client for the Website-URL→Video service.
+ * Client for the Education Video (animated lesson) service.
  *
- * New backend endpoints required (auth'd, axum handlers to be added in
- * src/handlers/website_video.rs + a route merge in src/main.rs):
- *   GET  /api/website-video/credits            → credits ledger
- *   GET  /api/website-video/pay-spec?offer_id= → x402 PaymentRequiredResponse
- *   POST /api/website-video/settle             → settle USDC payment (X-Payment header)
- *   POST /api/website-video/payment/paypal/create  → create PayPal order + pending bundle
- *   POST /api/website-video/payment/paypal/capture → capture PayPal order, grant credits
- *   POST /api/website-video/generate           → create landing_page delivery (decrement credit)
- *   GET  /api/website-video/videos             → list the user's deliveries
+ * Backend endpoints (auth'd, src/handlers/education_video.rs + a route merge
+ * in src/main.rs):
+ *   GET  /api/education-video/credits            → credits ledger
+ *   GET  /api/education-video/pay-spec?offer_id= → x402 PaymentRequiredResponse
+ *   POST /api/education-video/settle             → settle USDC payment (X-Payment header)
+ *   POST /api/education-video/payment/paypal/create  → create PayPal order + pending bundle
+ *   POST /api/education-video/payment/paypal/capture → capture PayPal order, grant credits
+ *   POST /api/education-video/generate           → create education delivery (decrement credit)
+ *   GET  /api/education-video/videos             → list the user's lesson deliveries
  *
  * The existing GET /api/paypal/config returns { client_id, offers } for the JS SDK.
  */
-export const websiteVideoService = {
+export const educationVideoService = {
   getPayPalConfig: async (): Promise<{ client_id: string }> => {
     const { data } = await api.get<{ client_id: string }>('/api/paypal/config');
     return data;
@@ -34,7 +34,7 @@ export const websiteVideoService = {
 
   getCredits: async (): Promise<CreditsSummary> => {
     const { data } = await api.get<{ success: boolean; error?: string } & Partial<CreditsSummary>>(
-      '/api/website-video/credits'
+      '/api/education-video/credits'
     );
     if (!data.success) throw new Error(data.error || 'Failed to load credits');
     return {
@@ -45,21 +45,21 @@ export const websiteVideoService = {
   },
 
   createPayPalOrder: async (offerId: string): Promise<PayPalCreateResponse> => {
-    const { data } = await api.post<PayPalCreateResponse>('/api/website-video/payment/paypal/create', {
+    const { data } = await api.post<PayPalCreateResponse>('/api/education-video/payment/paypal/create', {
       offer_id: offerId,
     });
     return data;
   },
 
   capturePayPalOrder: async (bundleId: string): Promise<PayPalCaptureResponse> => {
-    const { data } = await api.post<PayPalCaptureResponse>('/api/website-video/payment/paypal/capture', {
+    const { data } = await api.post<PayPalCaptureResponse>('/api/education-video/payment/paypal/capture', {
       bundle_id: bundleId,
     });
     return data;
   },
 
   getPaySpec: async (offerId: string): Promise<PaymentRequiredResponse> => {
-    const { data } = await api.get<PaymentRequiredResponse>('/api/website-video/pay-spec', {
+    const { data } = await api.get<PaymentRequiredResponse>('/api/education-video/pay-spec', {
       params: { offer_id: offerId },
     });
     return data;
@@ -67,7 +67,7 @@ export const websiteVideoService = {
 
   settle: async (offerId: string, xPayment: string): Promise<SettleResponse> => {
     const { data } = await api.post<SettleResponse>(
-      '/api/website-video/settle',
+      '/api/education-video/settle',
       { offer_id: offerId },
       { headers: { 'X-Payment': xPayment } }
     );
@@ -75,12 +75,12 @@ export const websiteVideoService = {
   },
 
   generateVideo: async (req: GenerateVideoRequest): Promise<GenerateResponse> => {
-    const { data } = await api.post<GenerateResponse>('/api/website-video/generate', req);
+    const { data } = await api.post<GenerateResponse>('/api/education-video/generate', req);
     return data;
   },
 
   listVideos: async (): Promise<Delivery[]> => {
-    const { data } = await api.get<VideosResponse>('/api/website-video/videos');
+    const { data } = await api.get<VideosResponse>('/api/education-video/videos');
     if (!data.success) throw new Error(data.error || 'Failed to list videos');
     return data.deliveries || [];
   },

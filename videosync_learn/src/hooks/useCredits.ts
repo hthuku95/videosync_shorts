@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { websiteVideoService } from '@/services/websiteVideo.service';
-import type { CreditsSummary } from '@/types/websiteVideo.types';
+import { educationVideoService } from '@/services/educationVideo.service';
+import type { CreditsSummary } from '@/types/educationVideo.types';
 
-export const CREDITS_QUERY_KEY = ['websiteVideo', 'credits'];
+export const CREDITS_QUERY_KEY = ['educationVideo', 'credits'];
 
 /**
  * Loads the user's credits ledger and exposes helpers to refresh it
@@ -11,7 +11,7 @@ export const CREDITS_QUERY_KEY = ['websiteVideo', 'credits'];
 export function useCredits() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: CREDITS_QUERY_KEY,
-    queryFn: () => websiteVideoService.getCredits(),
+    queryFn: () => educationVideoService.getCredits(),
   });
 
   const summary: CreditsSummary = data ?? { purchased: 0, used: 0, remaining: 0 };
