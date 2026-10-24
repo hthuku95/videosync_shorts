@@ -6,6 +6,7 @@ import {
   Tabs, Tab,
 } from '@mui/material';
 import { campaignService, type Campaign, type CampaignPost } from '@/services/campaign.service';
+import { activityService, type CampaignActivity } from '@/services/activity.service';
 import { UsdcPayDialog } from '@/components/payments/UsdcPayDialog';
 import { usePayPalScript } from '@/hooks/usePayPalScript';
 import { PATHS } from '@/routes/paths';
@@ -14,6 +15,7 @@ export default function CampaignDetailPage() {
   const { id } = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [posts, setPosts] = useState<CampaignPost[]>([]);
+  const [activity, setActivity] = useState<CampaignActivity | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [payOpen, setPayOpen] = useState(false);
@@ -35,6 +37,19 @@ export default function CampaignDetailPage() {
 
   useEffect(() => {
     load();
+    if (!id) return;
+    let cancelled = false;
+    const poll = async () => {
+      try {
+        const a = await activityService.get(id);
+        if (!cancelled) setActivity(a);
+      } catch {
+        /* ignore transient errors */
+      }
+    };
+    poll();
+    const timer = setInterval(poll, 5000);
+    return () => { cancelled = true; clearInterval(timer); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -146,6 +161,70 @@ export default function CampaignDetailPage() {
                       View
                     </Button>
                   ) : null; })()}
+                </Box>
+              ))}
+            </Box>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card sx={{ mt: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Production Activity
+          </Typography>
+          {!activity ? (
+            <Typography variant="body2" color="text.secondary">
+              Loading activity…
+            </Typography>
+          ) : activity.items.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              No production runs yet.
+            </Typography>
+          ) : (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {activity.items.map((item) => (
+                <Box key={item.post_id} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                    <Typography variant="body2" fontWeight={600}>
+                      Day {item.day_number} · Slot {item.slot_index}
+                    </Typography>
+                    <Chip size="small" label={item.stage_label} color={item.active ? 'primary' : item.workflow_status === 'failed' ? 'error' : 'default'} />
+                    {item.active && <CircularProgress size={14} />}
+                  </Box>
+                  <LinearProgress variant="determinate" value={(item.stage_index / item.stage_count) * 100} sx={{ mb: 1 }} />
+                  {item.events.length > 0 && (
+                    <Box sx={{ mb: 1 }}>
+                      {item.events.slice(-6).map((e, i) => (
+                        <Typography key={i} variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                          {e.at.slice(11, 19)} — {e.label}{e.note ? `: ${e.note}` : ''}
+                        </Typography>
+                      ))}
+                    </Box>
+                  )}
+                  {item.can_feedback && item.workflow_id && (
+                    <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                      <input
+                        placeholder="Send a note to the producer…"
+                        style={{ flex: 1, padding: '6px 8px', borderRadius: 4, border: '1px solid #ccc' }}
+                        onKeyDown={async (ev) => {
+                          const target = ev.target as HTMLInputElement;
+                          if (ev.key === 'Enter' && target.value.trim()) {
+                            try {
+                              await activityService.sendFeedback(item.workflow_id!, target.value.trim());
+                              target.value = '';
+                              if (id) {
+                                const a = await activityService.get(id);
+                                setActivity(a);
+                              }
+                            } catch (e: any) {
+                              alert(e?.response?.data?.error || e.message || 'Failed to send note');
+                            }
+                          }
+                        }}
+                      />
+                    </Box>
+                  )}
                 </Box>
               ))}
             </Box>
