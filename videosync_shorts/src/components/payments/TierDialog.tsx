@@ -37,6 +37,7 @@ export function TierDialog({
 }) {
   const [tier, setTier] = useState<AppTier>(tiers[0]);
   const [tab, setTab] = useState<0 | 1>(0);
+  const [payMethods, setPayMethods] = useState<string[]>(['paypal']);
 
   useEffect(() => {
     if (open) {
@@ -44,6 +45,25 @@ export function TierDialog({
       setTier(tiers[0]);
     }
   }, [open, tiers]);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/payment-methods`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('auth_token')}` },
+        });
+        const data = await res.json();
+        if (!cancelled && data?.success && Array.isArray(data.methods)) {
+          setPayMethods(data.methods);
+        }
+      } catch {
+        /* keep default (paypal) */
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -96,14 +116,30 @@ export function TierDialog({
           </Alert>
         ) : (
           <>
-            <Tabs value={tab} onChange={(_, v: 0 | 1) => setTab(v)} sx={{ mb: 2 }}>
-              <Tab label="PayPal / Card" />
-              <Tab label="USDC (Base)" />
-            </Tabs>
-            {tab === 0 ? (
+            {payMethods.includes('usdc') ? (
+              <>
+                <Tabs value={tab} onChange={(_, v: 0 | 1) => setTab(v)} sx={{ mb: 2 }}>
+                  <Tab label="PayPal / Card" disabled={!payMethods.includes('paypal')} />
+                  <Tab label="USDC (Base)" disabled={!payMethods.includes('usdc')} />
+                </Tabs>
+                {tab === 0 && payMethods.includes('paypal') ? (
+                  <TierPaypal app={app} tier={tier} onPaid={() => { onChanged(); onClose(); }} />
+                ) : tab === 1 && payMethods.includes('usdc') ? (
+                  <TierUsdc app={app} tier={tier} onPaid={() => { onChanged(); onClose(); }} />
+                ) : payMethods.includes('usdc') && !payMethods.includes('paypal') ? (
+                  <TierUsdc app={app} tier={tier} onPaid={() => { onChanged(); onClose(); }} />
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    No payment methods are currently enabled.
+                  </Typography>
+                )}
+              </>
+            ) : payMethods.includes('paypal') ? (
               <TierPaypal app={app} tier={tier} onPaid={() => { onChanged(); onClose(); }} />
             ) : (
-              <TierUsdc app={app} tier={tier} onPaid={() => { onChanged(); onClose(); }} />
+              <Typography variant="body2" color="text.secondary">
+                No payment methods are currently enabled.
+              </Typography>
             )}
           </>
         )}
