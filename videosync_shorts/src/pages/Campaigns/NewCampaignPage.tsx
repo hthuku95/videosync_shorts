@@ -146,7 +146,6 @@ export default function NewCampaignPage() {
           </Button>
         </CardContent>
       </Card>
-    </Box>
       </>
       )}
     </Box>
