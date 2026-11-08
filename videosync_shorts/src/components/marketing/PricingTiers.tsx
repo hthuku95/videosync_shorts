@@ -14,7 +14,7 @@ export interface TierInfo {
 }
 
 /** Three-tier pricing with glassmorphism featured card. */
-export function PricingTiers({ tiers }: { tiers: TierInfo[] }) {
+export function PricingTiers({ tiers, campaignsOff = false }: { tiers: TierInfo[]; campaignsOff?: boolean }) {
   return (
     <Box
       sx={{
@@ -54,7 +54,7 @@ export function PricingTiers({ tiers }: { tiers: TierInfo[] }) {
                 </Typography>
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {t.accounts} connected accounts · unlimited campaigns
+                {t.accounts} connected accounts · {campaignsOff ? 'one-time bundles available' : 'unlimited campaigns'}
               </Typography>
               <Typography variant="body2" sx={{ mb: 2.5, minHeight: 40 }}>
                 {t.blurb}
