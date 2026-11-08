@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon , Upgrade as UpgradeIcon } from '@mui/icons-material';
 import { campaignService, type Campaign } from '@/services/campaign.service';
+import { getFeatureFlags } from '@/services/features.service';
 import { TierDialog } from '@/components/payments/TierDialog';
 import { PATHS } from '@/routes/paths';
 
@@ -19,8 +20,14 @@ export default function CampaignsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tiersOpen, setTiersOpen] = useState(false);
+  const [campaignsEnabled, setCampaignsEnabled] = useState(true);
+  const [campaignsMessage, setCampaignsMessage] = useState<string | null>(null);
 
   useEffect(() => {
+    getFeatureFlags().then((f) => {
+      setCampaignsEnabled(f.campaigns_enabled);
+      setCampaignsMessage(f.campaigns_message);
+    });
     campaignService
       .list()
       .then(setCampaigns)
@@ -30,6 +37,14 @@ export default function CampaignsPage() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 1000, mx: 'auto' }}>
+      {!campaignsEnabled && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          <Typography variant="body2" fontWeight={700}>Monthly campaigns — coming soon</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {campaignsMessage || 'Monthly campaigns are coming soon. One-time bundles (10 videos for $50 or 30 for $100) are available in the meantime.'}
+          </Typography>
+        </Alert>
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <Typography variant="h5" fontWeight={700} sx={{ flexGrow: 1 }}>
           My Campaigns
@@ -37,10 +52,11 @@ export default function CampaignsPage() {
         <Button variant="outlined" startIcon={<UpgradeIcon />} onClick={() => setTiersOpen(true)} sx={{ mr: 1 }}>
           Plan & Limits
         </Button>
+        {campaignsEnabled && (
         <Button variant="contained" startIcon={<AddIcon />} component={RouterLink} to={PATHS.CAMPAIGNS_NEW}>
           New Campaign
         </Button>
-      </Box>
+        )}      </Box>
       <TierDialog
         open={tiersOpen}
         onClose={() => setTiersOpen(false)}
@@ -58,12 +74,20 @@ export default function CampaignsPage() {
         <Card>
           <CardContent sx={{ textAlign: 'center', py: 6 }}>
             <Typography variant="h6" gutterBottom>No campaigns yet</Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              Create your first clip campaign — renders start within minutes.
-            </Typography>
-            <Button variant="contained" component={RouterLink} to={PATHS.CAMPAIGNS_NEW}>
-              Create Campaign
-            </Button>
+            {campaignsEnabled ? (
+              <>
+                <Typography variant="body2" color="text.secondary" paragraph>
+                  Create your first clip campaign — renders start within minutes.
+                </Typography>
+                <Button variant="contained" component={RouterLink} to={PATHS.CAMPAIGNS_NEW}>
+                  Create Campaign
+                </Button>
+              </>
+            ) : (
+              <Typography variant="body2" color="text.secondary" paragraph>
+                {campaignsMessage || 'Monthly campaigns are coming soon. One-time bundles (10 videos for $50 or 30 for $100) are available in the meantime.'}
+              </Typography>
+            )}
           </CardContent>
         </Card>
       ) : (
