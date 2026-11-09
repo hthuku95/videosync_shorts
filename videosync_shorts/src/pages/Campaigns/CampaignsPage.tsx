@@ -6,6 +6,7 @@ import {
 import { Add as AddIcon , Upgrade as UpgradeIcon } from '@mui/icons-material';
 import { campaignService, type Campaign } from '@/services/campaign.service';
 import { getFeatureFlags } from '@/services/features.service';
+import { CampaignComingSoon } from '@/components/marketing/CampaignComingSoon';
 import { TierDialog } from '@/components/payments/TierDialog';
 import { PATHS } from '@/routes/paths';
 
@@ -38,12 +39,7 @@ export default function CampaignsPage() {
   return (
     <Box sx={{ p: 3, maxWidth: 1000, mx: 'auto' }}>
       {!campaignsEnabled && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          <Typography variant="body2" fontWeight={700}>Monthly campaigns — coming soon</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {campaignsMessage || 'Monthly campaigns are coming soon. One-time bundles (10 videos for $50 or 30 for $100) are available in the meantime.'}
-          </Typography>
-        </Alert>
+        <CampaignComingSoon message={campaignsMessage} />
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <Typography variant="h5" fontWeight={700} sx={{ flexGrow: 1 }}>
