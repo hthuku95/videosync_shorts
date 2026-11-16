@@ -45,9 +45,11 @@ export default function CampaignsPage() {
         <Typography variant="h5" fontWeight={700} sx={{ flexGrow: 1 }}>
           My Campaigns
         </Typography>
+        {campaignsEnabled && (
         <Button variant="outlined" startIcon={<UpgradeIcon />} onClick={() => setTiersOpen(true)} sx={{ mr: 1 }}>
           Plan & Limits
         </Button>
+        )}
         {campaignsEnabled && (
         <Button variant="contained" startIcon={<AddIcon />} component={RouterLink} to={PATHS.CAMPAIGNS_NEW}>
           New Campaign

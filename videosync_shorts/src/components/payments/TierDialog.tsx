@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { campaignService } from '@/services/campaign.service';
 import { usePayPalScript } from '@/hooks/usePayPalScript';
+import { getFeatureFlags } from '@/services/features.service';
 
 export interface AppTier {
   id: string;
@@ -38,6 +39,17 @@ export function TierDialog({
   const [tier, setTier] = useState<AppTier>(tiers[0]);
   const [tab, setTab] = useState<0 | 1>(0);
   const [payMethods, setPayMethods] = useState<string[]>(['paypal']);
+  const [campaignsOn, setCampaignsOn] = useState(true);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const flags = await getFeatureFlags();
+        if (!cancelled) setCampaignsOn(flags.campaigns_enabled);
+      } catch { /* keep default */ }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -108,7 +120,13 @@ export function TierDialog({
             </Card>
           ))}
         </Box>
-        {tier.current || tier.id === 'base' ? (
+        {!campaignsOn ? (
+          <Alert severity="warning">
+            Monthly campaigns are coming soon — tier upgrades will be available when
+            campaigns launch. In the meantime, one-time bundles (10 videos for $50
+            or 30 for $100) are available.
+          </Alert>
+        ) : tier.current || tier.id === 'base' ? (
           <Alert severity="info">
             {tier.id === 'base'
               ? `Starter is included in your ${appName} subscription — 20 connected accounts, no separate payment. Choose an Agency tier above to raise the cap.`
