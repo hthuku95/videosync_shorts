@@ -27,7 +27,7 @@ export function CampaignComingSoon({
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="h6" fontWeight={700}>
-            📅 {title || 'Monthly campaigns — coming soon'}
+            {title || 'Monthly campaigns — coming soon'}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             {message ||
