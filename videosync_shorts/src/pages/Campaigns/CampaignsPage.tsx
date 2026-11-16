@@ -44,7 +44,7 @@ export default function CampaignsPage() {
         <Card sx={{ mt: 3 }}>
           <CardContent>
             <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
-              How {appName} Campaigns Will Work
+              How YouTube Shorts Campaigns Will Work
             </Typography>
             <Box component="ol" sx={{ pl: 3, mb: 2, '& li': { mb: 1.5 } }}>
               <Typography component="li" variant="body2" color="text.secondary">
@@ -52,14 +52,7 @@ export default function CampaignsPage() {
                 you want posted to. You stay in control and can disconnect anytime.
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                <strong>Tell the AI what to make</strong> — your niche, style, and sources.
-                {app === 'clips' || app === 'shorts'
-                  ? ' For clip campaigns: the streams and videos you want turned into highlights.'
-                  : app === 'app'
-                  ? ' For website campaigns: your website URL — the AI learns your business from it.'
-                  : app === 'learn'
-                  ? ' For education campaigns: your lesson topics — grounded in authoritative sources.'
-                  : ' Your topics, briefs, and sources.'}
+                <strong>Tell the AI what to make</strong> — your niche, style, and sources. For Shorts campaigns: the videos and podcasts to turn into daily Shorts.
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
                 <strong>Every day, fresh videos</strong> — scripted, narrated, rendered with
