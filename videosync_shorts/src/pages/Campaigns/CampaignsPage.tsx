@@ -39,7 +39,49 @@ export default function CampaignsPage() {
   return (
     <Box sx={{ p: 3, maxWidth: 1000, mx: 'auto' }}>
       {!campaignsEnabled && (
+        <>
         <CampaignComingSoon message={campaignsMessage} />
+        <Card sx={{ mt: 3 }}>
+          <CardContent>
+            <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+              How {appName} Campaigns Will Work
+            </Typography>
+            <Box component="ol" sx={{ pl: 3, mb: 2, '& li': { mb: 1.5 } }}>
+              <Typography component="li" variant="body2" color="text.secondary">
+                <strong>Connect your social accounts</strong> — secure OAuth for each platform
+                you want posted to. You stay in control and can disconnect anytime.
+              </Typography>
+              <Typography component="li" variant="body2" color="text.secondary">
+                <strong>Tell the AI what to make</strong> — your niche, style, and sources.
+                {app === 'clips' || app === 'shorts'
+                  ? ' For clip campaigns: the streams and videos you want turned into highlights.'
+                  : app === 'app'
+                  ? ' For website campaigns: your website URL — the AI learns your business from it.'
+                  : app === 'learn'
+                  ? ' For education campaigns: your lesson topics — grounded in authoritative sources.'
+                  : ' Your topics, briefs, and sources.'}
+              </Typography>
+              <Typography component="li" variant="body2" color="text.secondary">
+                <strong>Every day, fresh videos</strong> — scripted, narrated, rendered with
+                motion graphics, captioned and branded, then posted to your connected accounts
+                automatically. Quality-checked before anything goes out.
+              </Typography>
+              <Typography component="li" variant="body2" color="text.secondary">
+                <strong>Track it all</strong> — the dashboard shows every generated video and
+                every post, with analytics per account.
+              </Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Plans at launch:</strong> Starter includes 20 connected accounts with your
+              subscription; Agency tiers (50 / 150 accounts) for larger operations. Exact pricing
+              will be shown here when campaigns go live.
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1.5 }}>
+              <strong>Available today:</strong> the one-time video bundles — no subscription needed.
+            </Typography>
+          </CardContent>
+        </Card>
+        </>
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <Typography variant="h5" fontWeight={700} sx={{ flexGrow: 1 }}>
